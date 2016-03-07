@@ -79,7 +79,19 @@ namespace MosaicoMailEditor.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.MailMessageTemplates.Add(mailMessageTemplate);
+            var currentMessage = db.MailMessageTemplates.FirstOrDefault(_m => _m.Key == mailMessageTemplate.Key);
+            if (currentMessage != null)
+            {
+                currentMessage.Html = mailMessageTemplate.Html;
+                currentMessage.Metadata = mailMessageTemplate.Metadata;
+                currentMessage.Name = mailMessageTemplate.Name;
+                currentMessage.Template = mailMessageTemplate.Template;
+            }
+            else
+            {
+                db.MailMessageTemplates.Add(mailMessageTemplate);
+            }
+            
 
             try
             {
